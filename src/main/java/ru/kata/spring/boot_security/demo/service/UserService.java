@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
     User getById(long id);
-    Optional<User> getByName(String username);
+    Optional<User> getUserByUsername(String username);
     void addUser(User newUser);
     void deleteUser(Long id);
     void updateUser(long id, User userForUpdate);

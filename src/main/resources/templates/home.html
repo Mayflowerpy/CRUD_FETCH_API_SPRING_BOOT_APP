@@ -4,17 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello</title>
+    <h1>Welcome!</h1>
+    <h2>Please, click the button to display information</h2>
 </head>
 
 <body>
-<div>
-    <th:block th:each="msg : ${messages}">
-        <h1 th:text="${msg}"></h1>
-    </th:block>
-</div>
-<br>
-<!--<input type ="button" value="List of all Users"-->
-<!--       onclick="window.location.href = 'users'"/>-->
+<input type ="button" value="User page"
+       onclick="window.location.href = 'user'"/>
+<input type ="button" value="Admin page"
+       onclick="window.location.href = 'admin'"/>
 </body>
-
 </html>

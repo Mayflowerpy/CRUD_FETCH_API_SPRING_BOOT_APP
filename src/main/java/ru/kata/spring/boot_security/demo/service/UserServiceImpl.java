@@ -3,6 +3,7 @@ package ru.kata.spring.boot_security.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.User;
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserService {
     public User getById(long id) {
         Optional<User> userById = userRepository.findById(id);
         if (userById.isEmpty()) {
-            throw new UsernameNotFoundException("User with this id not found");
+            throw new UsernameNotFoundException(String.format("User with id %s not found", id));
         } else {
             return userById.get();
         }
@@ -34,12 +35,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<User> getByName(String username) {
-        return userRepository.findByName(username);
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.getUserByUsername(username);
     }
 
     @Override
     public void addUser(User newUser) {
+        newUser.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
         userRepository.saveAndFlush(newUser);
     }
 
@@ -51,7 +53,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(long id, User userForUpdate) {
         Optional<User> user = userRepository.findById(id);
-        userRepository.saveAndFlush(userForUpdate);
+        if (user.isPresent()) {
+            User updateUser = user.get();
+            updateUser.setId(id);
+            updateUser.setName(userForUpdate.getName());
+            updateUser.setLastName(userForUpdate.getLastName());
+            updateUser.setAge(userForUpdate.getAge());
+            updateUser.setMail(userForUpdate.getMail());
+            updateUser.setUsername(updateUser.getUsername());
+            updateUser.setPassword(new BCryptPasswordEncoder().encode(userForUpdate.getPassword()));
+            updateUser.setRoles(userForUpdate.getRoles());
+            userRepository.saveAndFlush(updateUser);
+        } else {
+            throw new UsernameNotFoundException(String.format("User with id %s not found", id));
+        }
     }
 
 
@@ -64,7 +79,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user =  getByName(username);
+        Optional<User> user = getUserByUsername(username);
         if (user.isEmpty()) {
             throw new UsernameNotFoundException(String.format("User %s not found", username));
         } else {
