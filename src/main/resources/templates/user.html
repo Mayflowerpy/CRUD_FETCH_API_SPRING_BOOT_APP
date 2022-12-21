@@ -2,10 +2,48 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User Page</title>
-    <h1>User Page</h1>
+    <title>View User</title>
+    <h2>User Page</h2>
 </head>
 <body>
+<br/>
+<div th:if="${user}">
+    <table border="0">
+        <tr>
+            <td>ID</td>
+            <td>:</td>
+            <td th:utext="${user.id}">...</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>:</td>
+            <td th:utext="${user.name}">...</td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td>:</td>
+            <td th:utext="${user.lastName}">...</td>
+        </tr>
+        <tr>
+            <td>Age</td>
+            <td>:</td>
+            <td th:utext="${user.age}">...</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>:</td>
+            <td th:utext="${user.mail}">...</td>
+        </tr>
+        <tr>
+            <td>Rights</td>
+            <td>:</td>
+            <td th:utext="${user.roles}">...</td>
+        </tr>
+    </table>
+    <br/><br/>
 
+</div>
+
+<a th:href="@{/logout}">Logout</a>
 </body>
 </html>
