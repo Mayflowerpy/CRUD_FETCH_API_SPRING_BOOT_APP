@@ -21,7 +21,6 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public User getById(long id) {
