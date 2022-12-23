@@ -7,12 +7,22 @@
     <title>Login Page</title>
 </head>
 <body>
+
 <div class="container text-center">
-    <div class="row">
-        <div class="col">
-            <b>Please sign in</b>
-        </div>
-    </div>
+    <h1>Enter Mail and Password</h1>
+        <form name ="f" method="post" action="/process_login">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <label for="username"></label>
+            <input type="text" name="username" id="username" placeholder="Mail"/>
+            <br/>
+            <label for="password"></label>
+            <input type="password" name="password" id="password" placeholder="Password"/>
+            <br/>
+            <input type="submit" value="Login"/>
+            <div th:if="${param.error}" style="color: red">
+                Неправильноне имя или пароль
+            </div>
+        </form>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 </body>
