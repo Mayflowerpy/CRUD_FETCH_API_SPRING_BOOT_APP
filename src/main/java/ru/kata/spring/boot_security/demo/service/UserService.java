@@ -1,11 +1,10 @@
 package ru.kata.spring.boot_security.demo.service;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.kata.spring.boot_security.demo.models.User;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserService extends UserDetailsService {
+public interface UserService {
     User getById(long id);
     Optional<User> getUserByUsername(String username);
     Optional<User> getUserByMail(String mail);

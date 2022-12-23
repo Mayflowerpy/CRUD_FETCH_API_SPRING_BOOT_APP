@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -56,39 +55,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(long id, User userForUpdate) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            User updateUser = user.get();
-            updateUser.setId(id);
-            updateUser.setName(userForUpdate.getName());
-            updateUser.setLastName(userForUpdate.getLastName());
-            updateUser.setAge(userForUpdate.getAge());
-            updateUser.setMail(userForUpdate.getMail());
-            updateUser.setUsername(updateUser.getUsername());
-            if (!userForUpdate.getPassword().equals(user.get().getPassword())) {
-                updateUser.setPassword(new BCryptPasswordEncoder().encode(userForUpdate.getPassword()));
+        if (!getById(id).getPassword().equals(userForUpdate.getPassword())) {
+            userForUpdate.setPassword(new BCryptPasswordEncoder().encode(userForUpdate.getPassword()));
             }
-            updateUser.setRoles(userForUpdate.getRoles());
-            userRepository.saveAndFlush(updateUser);
-        } else {
-            throw new UsernameNotFoundException(String.format("User with id %s not found", id));
-        }
+        userRepository.saveAndFlush(userForUpdate);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<User> getUsersList() {
         return userRepository.findAll();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
-        Optional<User> user = getUserByMail(mail);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException(String.format("User with mail %s not found", mail));
-        } else {
-            return new org.springframework.security.core.userdetails.User(user.get().getMail(), user.get().getPassword(), user.get().getAuthorities());
-        }
     }
 }
