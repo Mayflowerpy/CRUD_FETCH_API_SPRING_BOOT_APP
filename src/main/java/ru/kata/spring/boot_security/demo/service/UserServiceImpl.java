@@ -39,6 +39,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> getUserByMail(String mail) {
+        return userRepository.getUserByMail(mail);
+    }
+
+    @Override
     public void addUser(User newUser) {
         newUser.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
         userRepository.saveAndFlush(newUser);
@@ -60,7 +65,9 @@ public class UserServiceImpl implements UserService {
             updateUser.setAge(userForUpdate.getAge());
             updateUser.setMail(userForUpdate.getMail());
             updateUser.setUsername(updateUser.getUsername());
-            updateUser.setPassword(new BCryptPasswordEncoder().encode(userForUpdate.getPassword()));
+            if (!userForUpdate.getPassword().equals(user.get().getPassword())) {
+                updateUser.setPassword(new BCryptPasswordEncoder().encode(userForUpdate.getPassword()));
+            }
             updateUser.setRoles(userForUpdate.getRoles());
             userRepository.saveAndFlush(updateUser);
         } else {
@@ -76,12 +83,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = getUserByUsername(username);
+    public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
+        Optional<User> user = getUserByMail(mail);
         if (user.isEmpty()) {
-            throw new UsernameNotFoundException(String.format("User %s not found", username));
+            throw new UsernameNotFoundException(String.format("User with mail %s not found", mail));
         } else {
-            return new org.springframework.security.core.userdetails.User(user.get().getUsername(), user.get().getPassword(), user.get().getAuthorities());
+            return new org.springframework.security.core.userdetails.User(user.get().getMail(), user.get().getPassword(), user.get().getAuthorities());
         }
     }
 }
