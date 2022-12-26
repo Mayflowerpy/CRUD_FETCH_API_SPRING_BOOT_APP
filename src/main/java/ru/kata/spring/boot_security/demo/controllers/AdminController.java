@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
+import java.security.Principal;
 
 @Controller
 public class AdminController {
@@ -25,15 +26,12 @@ public class AdminController {
     }
 
     @GetMapping("/admin")
-    public String pageForAdmins(Model model) {
+    public String pageForAdmins(@ModelAttribute("user") User user,Model model, Principal principal) {
+        Long id = userService.getUserByMail(principal.getName()).get().getId();
+        model.addAttribute("admin", userService.getById(id));
         model.addAttribute("users", userService.getUsersList());
+        model.addAttribute("roles", roleService.getRoles());
         return "admin";
-    }
-
-    @GetMapping("/admin/newUser")
-    public String addNewUser(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("allRoles", roleService.getRoles());
-        return "newUser";
     }
 
     @PostMapping("/admin/newUser")
@@ -48,14 +46,14 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/{id}/edit")
+    @GetMapping("/admin/{id}")
     public String updateUser(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.getById(id));
         model.addAttribute("allRoles", roleService.getRoles());
-        return "edit";
+        return "redirect:/admin";
     }
 
-    @PatchMapping("/admin/{id}/edit")
+    @PatchMapping("/admin/{id}")
     public String update(@ModelAttribute("user") User user,
                          @PathVariable("id") long id) {
         userService.updateUser(id, user);

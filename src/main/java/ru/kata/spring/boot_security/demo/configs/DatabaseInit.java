@@ -38,7 +38,6 @@ public class DatabaseInit {
             Set<Role> adminRoles = new HashSet<>();
             Collections.addAll(adminRoles, roleService.roleByID(1L), roleService.roleByID(2L));
             admin.setId(1L);
-            admin.setUsername("admin");
             admin.setPassword("admin");
             admin.setName("Vladislav");
             admin.setLastName("Shilov");
@@ -51,7 +50,6 @@ public class DatabaseInit {
             Set<Role> userRoles = new HashSet<>();
             Collections.addAll(userRoles, roleService.roleByID(2L));
             user.setId(2L);
-            user.setUsername("user");
             user.setPassword("user");
             user.setName("Roman");
             user.setLastName("Petrov");

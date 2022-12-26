@@ -32,12 +32,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Optional<User> getUserByUsername(String username) {
-        return userRepository.getUserByUsername(username);
-    }
-
-    @Override
     public Optional<User> getUserByMail(String mail) {
         return userRepository.getUserByMail(mail);
     }

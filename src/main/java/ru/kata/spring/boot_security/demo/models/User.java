@@ -2,7 +2,6 @@ package ru.kata.spring.boot_security.demo.models;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
@@ -25,9 +24,6 @@ public class User implements UserDetails {
 
     @Column(name = "age")
     private int age;
-
-    @Column(name = "username", unique = true)
-    private String username;
 
     @Column(name = "password")
     private String password;
@@ -52,26 +48,16 @@ public class User implements UserDetails {
         this.mail = mail;
     }
 
-    public User(String username, String password, Set<Role> roles) {
-        this.username = username;
+    public User(String mail, String password, Set<Role> roles) {
+        this.mail = mail;
         this.password = password;
         this.roles = roles;
     }
 
-    public User(String name, String lastName, int age, String username, String password, String mail) {
+    public User(String name, String lastName, int age, String password, String mail, Set<Role> roles) {
         this.name = name;
         this.lastName = lastName;
         this.age = age;
-        this.username = username;
-        this.password = password;
-        this.mail = mail;
-    }
-
-    public User(String name, String lastName, int age, String username, String password, String mail, Set<Role> roles) {
-        this.name = name;
-        this.lastName = lastName;
-        this.age = age;
-        this.username = username;
         this.password = password;
         this.mail = mail;
         this.roles = roles;
@@ -101,15 +87,13 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    public String getUsername() {
-        return username;
-    }
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return mail;
     }
 
     public void setPassword(String password) {
@@ -171,7 +155,6 @@ public class User implements UserDetails {
                 ", name='" + name + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
-                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", mail='" + mail + '\'' +
                 ", roles=" + roles +
@@ -183,11 +166,11 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return age == user.age && Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(lastName, user.lastName) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(mail, user.mail) && Objects.equals(roles, user.roles);
+        return age == user.age && Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(lastName, user.lastName) && Objects.equals(password, user.password) && Objects.equals(mail, user.mail) && Objects.equals(roles, user.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, lastName, age, username, password, mail, roles);
+        return Objects.hash(id, name, lastName, age, password, mail, roles);
     }
 }
