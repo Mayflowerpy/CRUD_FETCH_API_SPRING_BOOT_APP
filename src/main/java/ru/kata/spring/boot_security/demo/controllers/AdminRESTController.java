@@ -1,16 +1,19 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -35,59 +38,54 @@ public class AdminRESTController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<HttpStatus> apiAddUser(@RequestBody @Valid User user,
+    public ResponseEntity<String> apiAddUser(@RequestBody User user,
                                                  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-
+            return new ResponseEntity<>(getErrorsFromBindingResult(bindingResult),
+                    HttpStatus.BAD_REQUEST);
         }
+        userService.addUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PutMapping("/users/{id}")
+    public  ResponseEntity<String> apiEditUser(@PathVariable("id") long id,
+                                               @RequestBody User user,
+                                               BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(getErrorsFromBindingResult(bindingResult),
+                    HttpStatus.BAD_REQUEST);
+        }
+        userService.updateUser(id, user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-//    @GetMapping("/admin")
-//    public String pageForAdmins(@ModelAttribute("user") User user, Model model, Principal principal) {
-//        model.addAttribute("admin", userService.getUserByEmail(principal.getName()).get());
-//        model.addAttribute("users", userService.getUsersList());
-//        model.addAttribute("roles", roleService.getRoles());
-//        return "admin";
-//    }
-//
-//    @GetMapping("/user")
-//    public User pageForUser(Principal principal) {
-//        return userService.getUserByEmail(principal.getName()).get();
-//    }
-//
-//    @PostMapping("/admin/newUser")
-//    public String saveNewUser(@ModelAttribute("user") @Valid User user,
-//                              BindingResult bindingResult) {
-//        if (bindingResult.hasErrors()) {
-//            return "admin";
-//        }
-//        userService.addUser(user);
-//        return "redirect:/admin";
-//    }
-//
-//    @DeleteMapping("/admin/{id}")
-//    public String deleteUser(@PathVariable("id") long id) {
-//        userService.deleteUser(id);
-//        return "redirect:/admin";
-//    }
-//
-//    @GetMapping("/admin/{id}")
-//    public String updateUser(@PathVariable("id") Long id, Model model) {
-//        model.addAttribute("user", userService.getById(id));
-//        model.addAttribute("allRoles", roleService.getRoles());
-//        return "redirect:/admin";
-//    }
-//
-//    @PatchMapping("/admin/{id}")
-//    public String update(@ModelAttribute("user") @Valid User user,
-//                         BindingResult bindingResult,
-//                         @PathVariable("id") long id) {
-//        if (bindingResult.hasErrors()) {
-//            return "admin";
-//        }
-//        userService.updateUser(id, user);
-//        return "redirect:/admin";
-//    }
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<String> apiDeleteUser(@PathVariable("id") long id) {
+
+        userService.deleteUser(id);
+        return new ResponseEntity<>("User was deleted",HttpStatus.OK);
+    }
+
+    @GetMapping("/viewUser")
+    public ResponseEntity<User> showUser(Authentication auth) {
+        return new ResponseEntity<>((User) auth.getPrincipal(), HttpStatus.OK);
+    }
+
+    @GetMapping("/roles")
+    public ResponseEntity<List<Role>> getAllRoles() {
+        return new ResponseEntity<>(roleService.getRoles(), HttpStatus.OK);
+    }
+
+    @GetMapping("/roles/{id}")
+    ResponseEntity<Role> getRoleById(@PathVariable("id") long id){
+        return new ResponseEntity<>(roleService.roleByID(id), HttpStatus.OK);
+    }
+
+    private String getErrorsFromBindingResult(BindingResult bindingResult) {
+        return bindingResult.getFieldErrors()
+                .stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.joining("; "));
+    }
 }

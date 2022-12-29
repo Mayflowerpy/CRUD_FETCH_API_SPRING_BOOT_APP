@@ -4,10 +4,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
@@ -22,27 +18,27 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "name")
-    @NotEmpty(message = "Name can't be empty")
-    @Size(min = 1, max = 40, message = "Name size 1-40 char")
+//    @NotEmpty(message = "Name can't be empty")
+//    @Size(min = 1, max = 40, message = "Name size 1-40 char")
     private String name;
 
     @Column(name = "last_name")
-    @NotEmpty(message = "Name can't be empty")
-    @Size(min = 1, max = 40, message = "Name size 1-40 char")
+//    @NotEmpty(message = "Name can't be empty")
+//    @Size(min = 1, max = 40, message = "Name size 1-40 char")
     private String lastName;
 
     @Column(name = "age")
 //    @NotEmpty(message = "Age can't be empty")
-    @Min(value = 0, message = "Age can't be less than 0")
+//    @Min(value = 0, message = "Age can't be less than 0")
     private int age;
 
     @Column(name = "password")
-    @NotEmpty(message = "Password can't be empty")
+//    @NotEmpty(message = "Password can't be empty")
     private String password;
 
     @Column(name = "email", unique = true)
-    @Email
-    @NotEmpty(message = "Email can't be empty")
+//    @Email
+//    @NotEmpty(message = "Email can't be empty")
     private String email;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
@@ -66,6 +62,14 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
         this.roles = roles;
+    }
+
+    public User(String name, String lastName, int age, String password, String email) {
+        this.name = name;
+        this.lastName = lastName;
+        this.age = age;
+        this.password = password;
+        this.email = email;
     }
 
     public User(String name, String lastName, int age, String password, String email, Set<Role> roles) {
