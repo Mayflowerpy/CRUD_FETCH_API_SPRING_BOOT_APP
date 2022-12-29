@@ -21,7 +21,7 @@
 
                             <!--Юзер с ролью-->
                             <div class="navbar-nav mr-auto mb-2 mb-lg-0">
-                                <span class="navbar-brand" th:utext="${admin.mail}"></span>
+                                <span class="navbar-brand" th:utext="${admin.email}"></span>
                                 <span class="navbar-brand">with roles:</span>
                                 <span class="navbar-brand" th:utext="${admin.roles}"></span>
                             </div>
@@ -116,7 +116,7 @@
                                             <td th:utext="${user.name}">
                                             <td th:utext="${user.lastName}">
                                             <td th:utext="${user.age}">
-                                            <td th:utext="${user.mail}">
+                                            <td th:utext="${user.email}">
                                             <td th:utext="${user.roles}">
                                             <td>
                                                 <a type="button" class="btn btn-info text-light"
@@ -182,9 +182,9 @@
                                                                     <br>
 
                                                                     <label for="mailEdit"><strong>Email</strong></label>
-                                                                    <input th:name="mail" th:type="text"
+                                                                    <input th:name="email" th:type="text"
                                                                            class="form-control"
-                                                                           th:value="${user.mail}"
+                                                                           th:value="${user.email}"
                                                                            id="mailEdit">
                                                                     <br>
 
@@ -216,6 +216,7 @@
                                                                 <button type="submit"
                                                                         class="btn btn-primary text-light">Edit
                                                                 </button>
+
                                                             </div>
                                                         </form>
                                                     </div>
@@ -266,7 +267,7 @@
                                                                 <label for="emailDel"><b>Email</b></label>
                                                                 <input th:name="email" th:type="text"
                                                                        class="form-control" id="emailDel"
-                                                                       th:value="${user.mail}" disabled/>
+                                                                       th:value="${user.email}" disabled/>
                                                                 <br>
 
                                                                 <label for="newUserRolesDelete"
@@ -331,9 +332,9 @@
                                             </div>
 
                                             <div class="container-fluid col-6">
-                                                <label for="mail"><strong>Email</strong></label>
-                                                <input type="text" th:field="*{mail}" class="form-control"
-                                                       id="mail" placeholder="Email">
+                                                <label for="email"><strong>Email</strong></label>
+                                                <input type="text" th:field="*{email}" class="form-control"
+                                                       id="email" placeholder="Email">
                                             </div>
 
                                             <div class="container-fluid col-6">
@@ -388,7 +389,7 @@
                                     <td th:utext="${admin.name}"></td>
                                     <td th:utext="${admin.lastName}"></td>
                                     <td th:utext="${admin.age}"></td>
-                                    <td th:utext="${admin.mail}"></td>
+                                    <td th:utext="${admin.email}"></td>
                                     <td th:utext="${admin.roles}"></td>
                                 </tr>
                                 </tbody>

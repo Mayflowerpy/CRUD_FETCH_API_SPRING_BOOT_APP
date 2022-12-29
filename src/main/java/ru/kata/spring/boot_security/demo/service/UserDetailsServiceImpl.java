@@ -18,12 +18,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
-        Optional<User> user = userService.getUserByMail(mail);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> user = userService.getUserByEmail(email);
         if (user.isEmpty()) {
-            throw new UsernameNotFoundException(String.format("User with mail %s not found", mail));
+            throw new UsernameNotFoundException(String.format("User with mail %s not found", email));
         } else {
-            return new org.springframework.security.core.userdetails.User(user.get().getMail(), user.get().getPassword(), user.get().getAuthorities());
+            return new org.springframework.security.core.userdetails.User(user.get().getEmail(), user.get().getPassword(), user.get().getAuthorities());
         }
     }
 }

@@ -18,7 +18,7 @@
                         <div style="padding-left: 15px">
                             <!--Юзер с ролью-->
                             <div class="navbar-nav mr-auto mb-2 mb-lg-0">
-                                <span class="navbar-brand" th:utext="${user.mail}"></span>
+                                <span class="navbar-brand" th:utext="${user.email}"></span>
                                 <span class="navbar-brand">with roles:</span>
                                 <span class="navbar-brand" th:utext="${user.roles}"></span>
                             </div>
@@ -73,7 +73,7 @@
                                     <td th:utext="${user.name}"></td>
                                     <td th:utext="${user.lastName}"></td>
                                     <td th:utext="${user.age}"></td>
-                                    <td th:utext="${user.mail}"></td>
+                                    <td th:utext="${user.email}"></td>
                                     <td th:utext="${user.roles}"></td>
                                 </tr>
                                 </tbody>
