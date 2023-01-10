@@ -69,7 +69,10 @@ public class AdminRESTController {
 
     @GetMapping("/viewUser")
     public ResponseEntity<User> showUser(Authentication auth) {
-        return new ResponseEntity<>((User) auth.getPrincipal(), HttpStatus.OK);
+//        return new ResponseEntity<>((User) auth.getPrincipal(), HttpStatus.OK);
+        return  new ResponseEntity<>(userService.getUserByEmail(auth.getName()).get(), HttpStatus.OK);
+//        return  new ResponseEntity<>(userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).get(), HttpStatus.OK);
+
     }
 
     @GetMapping("/roles")
