@@ -27,17 +27,17 @@ public class AdminRESTController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/admin/users")
     public ResponseEntity<List<User>> showAllUsers() {
         return new ResponseEntity<>(userService.getUsersList(), HttpStatus.OK);
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/admin/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
         return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/users")
+    @PostMapping("/admin/users")
     public ResponseEntity<String> apiAddUser(@RequestBody User user,
                                                  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -48,7 +48,7 @@ public class AdminRESTController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/admin/users/{id}")
     public  ResponseEntity<String> apiEditUser(@PathVariable("id") long id,
                                                @RequestBody User user,
                                                BindingResult bindingResult) {
@@ -60,7 +60,7 @@ public class AdminRESTController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/admin/users/{id}")
     public ResponseEntity<String> apiDeleteUser(@PathVariable("id") long id) {
 
         userService.deleteUser(id);
@@ -75,12 +75,12 @@ public class AdminRESTController {
 
     }
 
-    @GetMapping("/roles")
+    @GetMapping("/admin/roles")
     public ResponseEntity<List<Role>> getAllRoles() {
         return new ResponseEntity<>(roleService.getRoles(), HttpStatus.OK);
     }
 
-    @GetMapping("/roles/{id}")
+    @GetMapping("/admin/roles/{id}")
     ResponseEntity<Role> getRoleById(@PathVariable("id") long id){
         return new ResponseEntity<>(roleService.roleByID(id), HttpStatus.OK);
     }

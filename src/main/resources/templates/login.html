@@ -16,7 +16,7 @@
             <form name="f" method="post" action="/process_login">
                 <h2 class="form-signing-heading"><strong>Please sign in</strong></h2>
                 <br>
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+<!--                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
                 <input type="text" name="username" class="form-control" id="username" placeholder="Email address">
                 <input type="password" name="password" class="form-control" id="password" placeholder="Password">
                 <br>

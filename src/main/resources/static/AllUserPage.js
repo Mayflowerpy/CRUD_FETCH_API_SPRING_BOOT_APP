@@ -1,12 +1,7 @@
 const allUsersTable = document.getElementById("all-users-table");
-const adminPanel = document.getElementById("admin-panel");
-const addForm = document.getElementById("add-form");
-const editForm = document.getElementById("edit-form");
-const deleteForm = document.getElementById("delete-form");
-
 
 function showAllUsers() {
-    fetch("http://localhost:8088/api/users")
+    fetch("http://localhost:8088/api/admin/users")
         .then((res) => res.json())
         .then(
             (users) => {
@@ -20,7 +15,7 @@ function showAllUsers() {
                         <td>${user.lastName}</td>
                         <td>${user.age}</td>
                         <td>${user.email}</td>
-                        <td>${roles}</td> 
+                        <td>${user.roles.map(role => " " + role.name.substring(5))}</td> 
                         <td>
                              <button class="btn btn-info" type="button"
                              data-toggle="modal" data-target="#modalEdit"

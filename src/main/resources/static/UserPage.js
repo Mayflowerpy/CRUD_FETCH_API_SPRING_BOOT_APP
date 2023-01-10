@@ -8,10 +8,6 @@ function userAuthInfo() {
         .then((user) => {
 
             let temp = '';
-            let roles = '';
-            for (let i = 0; i < user.roles.length; i++) {
-                roles += user.roles[i].name.substring(5) + ' ';
-            }
 
             temp += `<tr>
             <td>${user.id}</td>
@@ -19,10 +15,10 @@ function userAuthInfo() {
             <td>${user.lastName}</td>
             <td>${user.age}</td>
             <td>${user.email}</td>
-            <td>${roles}</td> 
+            <td>${user.roles.map(role => " " + role.name.substring(5))}</td> 
             </tr>`;
             data.innerHTML = temp;
-            panel.innerHTML = `<h5>${user.email} with roles: ${roles}</h5>`
+            panel.innerHTML = `<h5>${user.email} with roles: ${user.roles.map(role => " " + role.name.substring(5))}</h5>`
         });
 }
 
