@@ -48,17 +48,24 @@ public class AdminRESTController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/admin/users/{id}")
-    public  ResponseEntity<String> apiEditUser(@PathVariable("id") long id,
-                                               @RequestBody User user,
-                                               BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(getErrorsFromBindingResult(bindingResult),
-                    HttpStatus.BAD_REQUEST);
-        }
-        userService.updateUser(id, user);
+    @PutMapping("/admin/users")
+    public ResponseEntity<Void> EditUser(@RequestBody User user) {
+        userService.updateUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+//    @PutMapping("/admin/users/{id}")
+//    public  ResponseEntity<String> apiEditUser(@PathVariable("id") long id,
+//                                               @RequestBody User user,
+//                                               BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) {
+//
+//            return new ResponseEntity<>(getErrorsFromBindingResult(bindingResult),
+//                    HttpStatus.BAD_REQUEST);
+//        }
+//        userService.updateUser(id, user);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
     @DeleteMapping("/admin/users/{id}")
     public ResponseEntity<String> apiDeleteUser(@PathVariable("id") long id) {

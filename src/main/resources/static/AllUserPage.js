@@ -19,7 +19,7 @@ function showAllUsers() {
                         <td>
                              <button class="btn btn-info" type="button"
                              data-bs-toggle="modal" data-bs-target="#modalEdit"
-                             onclick="editModal(${user.id})">Edit</button></td>
+                             onclick="showEditModal(${user.id})">Edit</button></td>
                              <td>
                              <button class="btn btn-danger" type="button"
                              data-bs-toggle="modal" data-bs-target="#modalDelete"
