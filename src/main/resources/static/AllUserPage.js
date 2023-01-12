@@ -18,11 +18,11 @@ function showAllUsers() {
                         <td>${user.roles.map(role => " " + role.name.substring(5))}</td> 
                         <td>
                              <button class="btn btn-info" type="button"
-                             data-toggle="modal" data-target="#modalEdit"
+                             data-bs-toggle="modal" data-bs-target="#modalEdit"
                              onclick="editModal(${user.id})">Edit</button></td>
                              <td>
                              <button class="btn btn-danger" type="button"
-                             data-toggle="modal" data-target="#modalDelete"
+                             data-bs-toggle="modal" data-bs-target="#modalDelete"
                              onclick="deleteModal(${user.id})">Delete</button></td>
                         </tr>`;
                     })
