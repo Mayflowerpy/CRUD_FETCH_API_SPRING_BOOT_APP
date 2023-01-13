@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -21,14 +21,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public User getById(long id) {
         Optional<User> userById = userRepository.findById(id);
-        if (userById.isEmpty()) {
-            throw new UsernameNotFoundException(String.format("User with id %s not found", id));
-        } else {
-            return userById.get();
-        }
+        userById.orElseThrow(() -> new UsernameNotFoundException(String.format("User with id %s not found", id)));
+        return userById.get();
     }
 
     @Override
@@ -36,17 +32,20 @@ public class UserServiceImpl implements UserService {
         return userRepository.getUserByEmail(email);
     }
 
+    @Transactional
     @Override
     public void addUser(User newUser) {
         newUser.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
         userRepository.saveAndFlush(newUser);
     }
 
+    @Transactional
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public void updateUser(long id, User userForUpdate) {
         if (!getById(id).getPassword().equals(userForUpdate.getPassword())) {
@@ -56,7 +55,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<User> getUsersList() {
         return userRepository.findAll();
     }
