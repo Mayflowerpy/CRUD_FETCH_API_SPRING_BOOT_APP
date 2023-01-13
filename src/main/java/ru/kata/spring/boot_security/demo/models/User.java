@@ -18,22 +18,15 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "name")
-//    @NotEmpty(message = "Name can't be empty")
-//    @Size(min = 1, max = 40, message = "Name size 1-40 char")
     private String name;
 
     @Column(name = "last_name")
-//    @NotEmpty(message = "Name can't be empty")
-//    @Size(min = 1, max = 40, message = "Name size 1-40 char")
     private String lastName;
 
     @Column(name = "age")
-//    @NotEmpty(message = "Age can't be empty")
-//    @Min(value = 0, message = "Age can't be less than 0")
     private int age;
 
     @Column(name = "password")
-//    @NotEmpty(message = "Password can't be empty")
     private String password;
 
     @Column(name = "email", unique = true)

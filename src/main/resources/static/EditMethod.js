@@ -1,14 +1,8 @@
 const editUserForm = document.getElementById("edit-user-form")
 
 async function editModal(id) {
-    fetch('http://localhost:8088/api/admin/users/' + id
-        , {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json;charset=UTF-8'
-        }
-    }
-    ).then(res => {
+    fetch('http://localhost:8088/api/admin/users/' + id)
+        .then(res => {
         res.json()
             .then(async user => {
                 console.log(user);
@@ -18,45 +12,20 @@ async function editModal(id) {
                 document.getElementById('ageEdit').value = user.age;
                 document.getElementById('emailEdit').value = user.email;
                 document.getElementById('passwordEdit').value = user.password;
-
-                // await fetch("http://localhost:8088/api/admin/roles")
-                //     .then(res => res.json())
-                //     .then(roleList => {
-                //         roleList.forEach(role => {
-                //             let selectedRole = false;
-                //             for (let i = 0; i < user.roleList.length; i++) {
-                //                 if (user.roleList[i].role === role.role) {
-                //                     selectedRole = true;
-                //                     break;
-                //                 }
-                //             }
-                //             let el = document.createElement("option");
-                //             el.text = role.role.substring(5);
-                //             el.value = role.id;
-                //             if (selectedRole) el.selected = true;
-                //             $('#rolesEditUser')[0].appendChild(el);
-                //         })
-                //     })
-
-                // if (user.roles.length === 2) {
-                //     document.getElementById('adminFlag').setAttribute('selected', 'true');
-                //     document.getElementById('userFlag').setAttribute('selected', 'true');
-                // } else if (user.roles.length === 1 && (user.roles[0].id === 1)) {
-                //     document.getElementById('adminFlag').setAttribute('selected', 'true');
-                // } else if (user.roles.length === 1 && (user.roles[0].id === 2)) {
-                //     document.getElementById('userFlag').setAttribute('selected', 'true');
-                // }
-
+                if (user.roles.length === 2) {
+                    document.getElementById('adminFlag').setAttribute('selected', 'true');
+                    document.getElementById('userFlag').setAttribute('selected', 'true');
+                } else if (user.roles.length === 1 && (user.roles[0].id === 1)) {
+                    document.getElementById('adminFlag').setAttribute('selected', 'true');
+                } else if (user.roles.length === 1 && (user.roles[0].id === 2)) {
+                    document.getElementById('userFlag').setAttribute('selected', 'true');
+                }
             })
     })
 }
 
-// function editUser() {
-
-editUserForm.addEventListener('submit', (e)=>{
+editUserForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-
-    // const editForm = document.forms["edit-user-form"];
 
     let idValue = document.getElementById("idEdit").value;
     let nameValue = document.getElementById('firstNameEdit').value;
@@ -64,26 +33,13 @@ editUserForm.addEventListener('submit', (e)=>{
     let ageValue = document.getElementById('ageEdit').value;
     let emailValue = document.getElementById('emailEdit').value;
     let passwordValue = document.getElementById('passwordEdit').value;
-
-    // let editUserRoles = [];
-    // if (editForm.roles !== undefined) {
-    //     for (let i = 0; i < editForm.roles.options.length; i++) {
-    //         if (editForm.roles.options[i].selected) editUserRoles.push({
-    //             id: editForm.roles.options[i].value,
-    //             role: "ROLE_" + editForm.roles.options[i].text
-    //         })
-    //     }
-    // }
+    let rolesValue = getEditRoles(Array.from(document.getElementById("rolesEdit").selectedOptions).map(role => role.value));
 
 
-    // let rolesValue = getRoles(Array.from(document.getElementById("rolesEdit").selectedOptions).map(role => role.value));
-
-
-    fetch('http://localhost:8088/api/admin/users', {
+    await fetch('http://localhost:8088/api/admin/users/' + idValue, {
         method: "PUT",
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json;charset=UTF-8'
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({
             id: idValue,
@@ -92,20 +48,25 @@ editUserForm.addEventListener('submit', (e)=>{
             age: ageValue,
             email: emailValue,
             password: passwordValue,
-            roles: editUserRoles,
+            roles: rolesValue,
         })
     })
-        .then(user => {
-            // const usersArr = [];
-            // usersArr.push(user);
-            showAllUsers(user);
-        })
         .then(() => {
-            document.getElementById("nav-admin-tab").click();})
-
-        // .then(() => {
-            // document.getElementById("nav-admin-tab").click();
-            // showAllUsers();
-            // document.getElementById("closeEditModal").click();
-        // })
+            document.getElementById("nav-admin-tab").click();
+            showAllUsers();
+            document.getElementById("closeEditModal").click();
+        })
 })
+
+function getEditRoles(rols) {
+    let roles = [];
+    if (rols.indexOf("ADMIN") >= 0) {
+        roles.push({"id": 1,
+            "name": 'ROLE_ADMIN'});
+    }
+    if (rols.indexOf("USER") >= 0) {
+        roles.push({"id": 2,
+            "name": 'ROLE_USER'});
+    }
+    return roles;
+}

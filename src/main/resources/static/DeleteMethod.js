@@ -17,8 +17,8 @@ function deleteModal(id) {
     })
 }
 
-function deleteUser() {
-    fetch('http://localhost:8088/api/admin/users/' + document.getElementById('idDel').value, {
+async function deleteUser() {
+    await fetch('http://localhost:8088/api/admin/users/' + document.getElementById('idDel').value, {
         method: 'DELETE',
         headers: {
             'Accept': 'application/json',

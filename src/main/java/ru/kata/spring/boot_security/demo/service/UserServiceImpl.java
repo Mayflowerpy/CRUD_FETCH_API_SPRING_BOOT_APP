@@ -51,14 +51,6 @@ public class UserServiceImpl implements UserService {
     public void updateUser(long id, User userForUpdate) {
         if (!getById(id).getPassword().equals(userForUpdate.getPassword())) {
             userForUpdate.setPassword(new BCryptPasswordEncoder().encode(userForUpdate.getPassword()));
-            }
-        userRepository.saveAndFlush(userForUpdate);
-    }
-
-    @Override
-    public void updateUser(User userForUpdate) {
-        if (!getById(userForUpdate.getId()).getPassword().equals(userForUpdate.getPassword())) {
-            userForUpdate.setPassword(new BCryptPasswordEncoder().encode(userForUpdate.getPassword()));
         }
         userRepository.saveAndFlush(userForUpdate);
     }

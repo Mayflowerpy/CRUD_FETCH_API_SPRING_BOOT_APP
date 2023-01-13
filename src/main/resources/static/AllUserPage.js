@@ -1,6 +1,6 @@
 const allUsersTable = document.getElementById("all-users-table");
 
-function showAllUsers() {
+async function showAllUsers() {
     fetch("http://localhost:8088/api/admin/users")
         .then((res) => res.json())
         .then(
@@ -19,7 +19,7 @@ function showAllUsers() {
                         <td>
                              <button class="btn btn-info" type="button"
                              data-bs-toggle="modal" data-bs-target="#modalEdit"
-                             onclick="showEditModal(${user.id})">Edit</button></td>
+                             onclick="editModal(${user.id})">Edit</button></td>
                              <td>
                              <button class="btn btn-danger" type="button"
                              data-bs-toggle="modal" data-bs-target="#modalDelete"

@@ -11,7 +11,6 @@ import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,24 +47,12 @@ public class AdminRESTController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/admin/users")
-    public ResponseEntity<Void> EditUser(@RequestBody User user) {
-        userService.updateUser(user);
+    @PutMapping("/admin/users/{id}")
+    public  ResponseEntity<String> apiEditUser(@PathVariable("id") long id,
+                                               @RequestBody User user) {
+        userService.updateUser(id, user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-//    @PutMapping("/admin/users/{id}")
-//    public  ResponseEntity<String> apiEditUser(@PathVariable("id") long id,
-//                                               @RequestBody User user,
-//                                               BindingResult bindingResult) {
-//        if (bindingResult.hasErrors()) {
-//
-//            return new ResponseEntity<>(getErrorsFromBindingResult(bindingResult),
-//                    HttpStatus.BAD_REQUEST);
-//        }
-//        userService.updateUser(id, user);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
 
     @DeleteMapping("/admin/users/{id}")
     public ResponseEntity<String> apiDeleteUser(@PathVariable("id") long id) {
