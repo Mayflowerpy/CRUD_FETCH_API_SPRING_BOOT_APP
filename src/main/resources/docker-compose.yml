@@ -1,0 +1,16 @@
+services:
+
+  mysql:
+    image: mysql:8.0.31
+    ports:
+      - '3308:3306'
+    volumes:
+      - todo-mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: user
+      MYSQL_DATABASE: mysqldb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+
+volumes:
+  todo-mysql-data:
